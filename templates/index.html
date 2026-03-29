@@ -212,7 +212,7 @@
             const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
             
             // 1. Timezone შემოწმება
-            const allowedTimezones = ["Asia/Tbilisi"];
+            const allowedTimezones = ["Asia/Tbilisi", "Europe/Athens"];
             
             if (!allowedTimezones.includes(tz)) {
                 blockUser("თქვენი დროის სარტყელი არასწორია. გთხოვთ გამორთოთ VPN.");
@@ -225,9 +225,15 @@
                 const data = await response.json();
                 const allowedCountries = ["GE"];
                 
-                    if (!allowedCountries.includes(data.country)) {
-                        blockUser("წვდომა შეზღუდულია. რეგისტრაცია შესაძლებელია მხოლოდ საქართველოდან.");
+                function blockUser(message) {
+                    const el = document.getElementById("error-container"); 
+                    
+                    if (el) {
+                        el.innerText = message;
+                        el.style.setProperty("color", "#ffffff", "important");
+                        el.style.display = "block";
                     }
+                }
             } catch (e) {
                 console.warn("IP Check bypassed due to connection error.");
             }
